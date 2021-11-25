@@ -1,0 +1,75 @@
+#bar {
+  /*-fx-border-radius: 15 15 0 0;*/
+  /*-fx-background-radius: 15 15 0 0;*/
+  -fx-background-color: #181c2e
+  
+}
+
+#bar-bottom {
+  /*-fx-border-radius: 0 0 15 15;*/
+ /* -fx-background-radius: 0 0 15 15;*/
+  -fx-background-color: #0d101c
+  
+}
+
+#startup {
+  -fx-border-radius: 5 5 5 5;
+  -fx-background-radius: 5 5 5 5;
+  -fx-background-color: #1990F1
+}
+
+/* */
+
+#content {
+  -fx-background-color: #0d101c
+}
+
+#contentPane {
+  -fx-background-color: #0d101c
+}
+
+#search {
+  -fx-text-inner-color: white
+}
+
+#test {
+  -fx-cursor: HAND
+}
+
+#background{
+  -fx-background-color: rgba(0,0,0,0.2);
+    -fx-border-radius: 15 15 15 15;
+  -fx-background-radius: 15 15 15 15;
+}
+#background2{
+  -fx-background-color: #181c2e;
+    -fx-border-radius: 15 15 15 15;
+  -fx-background-radius: 15 15 15 15;
+}
+
+#testtop{
+  -fx-background-color: #292d3f;
+  -fx-border-radius: 15 15 15 15;
+  -fx-background-radius: 15 15 15 15;
+}
+
+#selectionbg{
+	  -fx-background-color: #292d3f;
+}
+
+.text-field .scroll-pane {
+    -fx-background-color: transparent;
+}
+.text-field .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+.text-field .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+.text-field {
+    -fx-background-color: transparent, transparent;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #181c2e;
+}
+
