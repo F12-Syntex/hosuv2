@@ -21,13 +21,15 @@ import javafx.scene.text.Font;
 
 public class Search extends Pane{
 
-	public Search() {
-		this.font = new Font("SERIF", 16);
-	}
-	
 	public TextField field;
 	public Font font;
 	public ComboBox<String> comboBox;
+	public Domain selection = Domain.MANGA_DEX;
+	//public String lastSelection = "";
+	
+	public Search() {
+		this.font = new Font("SERIF", 16);
+	}
 	
 	@Override
 	public javafx.scene.layout.Pane get() {
@@ -55,6 +57,7 @@ public class Search extends Pane{
 		field.setOnKeyPressed((e) -> {
 			if(e.getCode() == KeyCode.ENTER) {
 				SearchableContent searchNode = HosuClient.getInstance().getPaneHandler().getCurrentSearchablePane();
+				//this.lastSelection = field.getText();
 				searchNode.onSearch(field.getText());
 				System.out.println("Searching for " + field.getText() + " in for node " + searchNode.getClass().getName());
 			}
@@ -74,6 +77,10 @@ public class Search extends Pane{
 		ObservableList<String> options = FXCollections.observableArrayList();
 		options.addAll(values);
 		
+		if(this.comboBox != null) {
+			this.selection = Domain.valueOf(this.comboBox.getValue().toUpperCase().replace(" ", "_"));
+		}
+		
 		this.comboBox = new ComboBox<>(options);
 		comboBox.setCellFactory(c -> new StatusListCell());
 		
@@ -81,9 +88,8 @@ public class Search extends Pane{
 		
 		comboBox.setMinSize(width/3, height/2 + height/3);
 		comboBox.setMaxSize(width/3, height/2 + height/3);
-		comboBox.setValue(StringBeautifier.beautifier(Domain.MANGA_STREAM.name()));
+		comboBox.setValue(StringBeautifier.beautifier(selection.name()));
 		comboBox.setCursor(Cursor.HAND);
-		
 		
 		pane.getChildren().add(field);
 		
@@ -102,6 +108,9 @@ public class Search extends Pane{
 		StackPane.setAlignment(pane, Pos.CENTER);
 		box.setAlignment(Pos.CENTER);
 		box.setSpacing(20);
+		
+		//System.out.println("searching for " + this.field.getText());
+		//HosuClient.getInstance().getPaneHandler().getMangaContent().lastSearched = this.field.getText();
 		
 		return container;
 	}

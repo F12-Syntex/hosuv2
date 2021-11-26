@@ -1,7 +1,5 @@
 package com.hosu.panes;
 
-import java.awt.Desktop;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,7 +12,6 @@ import com.hosu.css.Image;
 import com.hosu.datatypes.SearchableData;
 import com.hosu.settings.LinkGrabber;
 import com.hosu.settings.onImageClick;
-import com.syntex.manga.cashe.CasheHelper;
 import com.syntex.manga.models.QueriedManga;
 import com.syntex.manga.queries.RequestQueryResults;
 
@@ -154,13 +151,14 @@ public abstract class SearchableContent extends Pane{
 		options.setMaxSize(prefWidth, prefHeight/8);
 		
 		toShow.setId("img");
+	
 		
-		options.getChildren().add(new HosuButton(Image.DOWNLOAD2, Image.DOWNLOAD_COMPLETE, 32, (e) -> {
+		options.getChildren().add(new HosuButton(Image.DOWNLOAD2, Image.DOWNLOAD_COMPLETE, 24, (e) -> {
 			DownloadQuery download = new DownloadQuery(i);
 			HosuClient.getInstance().getPaneHandler().getHome().download(download);
 		}).makeToggle(true).get());
 		
-		options.getChildren().add(new HosuButton(Image.NEW_WINDOW, Image.OPEN_BROWSER, 32, (e) -> {
+		options.getChildren().add(new HosuButton(Image.NEW_WINDOW, Image.OPEN_BROWSER, 24, (e) -> {
 			try {
 				java.awt.Desktop.getDesktop().browse(new URI(i.getUrl()));
 			} catch (IOException e1) {
@@ -172,20 +170,9 @@ public abstract class SearchableContent extends Pane{
 			}
 		}).get());
 		
-		options.getChildren().add(new HosuButton(Image.HEART_OFF, Image.HEART_ON, 32, (e) -> {
+		options.getChildren().add(new HosuButton(Image.HEART_OFF, Image.HEART_ON, 24, (e) -> {
 			
 		}).makeToggle(true).get());
-		
-		options.getChildren().add(new HosuButton(Image.EDIT, Image.EDIT, 32, (e) -> {
-			File file = CasheHelper.getLatestQueriedFile(i.getSource());
-			try {
-				Desktop desktop = Desktop.getDesktop();
-				desktop.open(file);
-				//Runtime.getRuntime().exec("explorer.exe /select," + file.getAbsolutePath());
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}).get());
 		
 		VBox selection = new VBox();
 		selection.getChildren().add(toShow);

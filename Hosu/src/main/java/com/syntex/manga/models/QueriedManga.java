@@ -46,6 +46,9 @@ public class QueriedManga {
 		return Domain.fromDomain(this.source.getSource(), this.query);
 	}
 
+	public Domain getDomain() {
+		return this.source;
+	}
 	public RequestMangaData getAsManga() {
 		try {
 			return getSource().requestMangaData(this).call();

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import com.hosu.css.CssManager;
 import com.hosu.css.ImageHandler;
 import com.hosu.css.Styling;
+import com.hosu.database.Database;
 import com.hosu.helpers.Windows;
 import com.hosu.panes.PaneHandler;
 import com.hosu.settings.Settings;
@@ -37,12 +38,16 @@ public class HosuClient extends Application {
 	private Stage stage;
 	
 	private VBox body;
+	
+	public final static Database database = new Database();
 
 	private static double xOffset = 0; 
 	private static double yOffset = 0;
 	
 	@Override
 	public void start(Stage primaryStage) {
+		
+		database.connect();
 		
 		this.imageHandler = new ImageHandler();
 		new Thread(() -> {
@@ -104,7 +109,6 @@ public class HosuClient extends Application {
 			this.paneHandler.getHome().get();
 			this.paneHandler.setActiveWithSearch(this.paneHandler.getMangaContent());
 			this.paneHandler.getMangaContent().get();
-            this.paneHandler.getMangaContent().onSearch("");
             
             
         	//ResizeHelper.addResizeListener(primaryStage, size.getWidth()/2, size.getHeight(), Integer.MAX_VALUE, Integer.MAX_VALUE);            

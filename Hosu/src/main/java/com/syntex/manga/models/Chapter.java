@@ -93,6 +93,11 @@ public class Chapter implements IDownloadable{
 				url = new URL(img);
 				InputStream input = Encoder.openInputStream(url);
 				Image image = new Image(input);
+				if(image.getWidth() == 0) {
+					url = new URL(img.replace("http", "https"));
+					input = Encoder.openInputStream(url, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36.	");
+					image = new Image(input);
+				}
 				this.cashedImage.add(image);
 				//System.out.println("added image: " + img + " : " + this.cashedImage.size());
 				
@@ -100,7 +105,6 @@ public class Chapter implements IDownloadable{
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	public void freeMemory() {

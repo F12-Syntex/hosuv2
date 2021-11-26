@@ -22,14 +22,16 @@ public class MangaContent extends SearchableContent{
 
 	public String text;
 
-	private String lastSearched = "";
+	public String lastSearched = "";
 	
 	public boolean firstSearch = true;
 	
 	public MangaContent() {
 		this.pane = new GridPane();
-		this.maxColumns = 4.6;
-		this.maxRows = 2.5;
+		//this.maxColumns = 4.6;
+		//this.maxRows = 2.5;
+		this.maxColumns = 5.6;
+		this.maxRows = 3;
 		
 	}
 	
@@ -98,9 +100,11 @@ public class MangaContent extends SearchableContent{
 				}
 					
 				
-				RequestQueryResults request = invoke.requestCashedQueryResults().call();
+				RequestQueryResults request = invoke.requestCashedQueryResults();
 				
 				System.out.println("Found: " + request.getMangas().size() + " queries.");
+				
+				this.lastSearched = name;
 				
 				this.load(request, (e) -> {
 					this.workerPool.execute(() -> {

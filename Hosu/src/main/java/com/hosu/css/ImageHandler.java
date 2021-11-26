@@ -34,15 +34,16 @@ public class ImageHandler {
 		}
 	}
 	
-	public BufferedImage getImage(com.hosu.css.Image styling) {	
-		
+	public BufferedImage getImage(com.hosu.css.Image styling) {		
 		try {
-			System.out.println(ImageHandler.class.getResource(styling.getResource()));
 			return ImageIO.read(ImageHandler.class.getResource(styling.getResource()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public Image getFXImage(com.hosu.css.Image styling) {		
+		return new Image(ImageHandler.class.getResource(styling.getResource()).getPath());
 	}
 	
 	public Image getFromCashe(com.hosu.css.Image styling) {

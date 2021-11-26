@@ -12,7 +12,8 @@ public enum Image {
 	EDIT("icons8_edit_file_48px.png"), DROP_DOWN("expand.png"), DOUBLE_DROP_DOWN("icons8_double_down_48px.png"), DOUBLE_UP("icons8_double_up_48px.png"),
 	ARROW_UP("icons8_collapse_arrow_48px.png"), DELETE("icons8_unavailable_48px.png"), PICTURES("icons8_pictures_folder_24px.png"),
 	PAUSE("icons8_pause_button_48px.png"), PLAY("icons8_circled_play_48px.png"), STOP("icons8_multiply_48px.png"), RESTART("icons8_restart_48px_1.png"),
-	TURBO_ON("icons8_quick_mode_on_48px.png"), TURBO_OFF("icons8_quick_mode_off_48px.png"), EXIT("icons8_delete_24px.png");
+	TURBO_ON("icons8_quick_mode_on_48px.png"), TURBO_OFF("icons8_quick_mode_off_48px.png"), EXIT("icons8_delete_24px.png"),
+	TEST("");
 	
 	
 	private final String resource;

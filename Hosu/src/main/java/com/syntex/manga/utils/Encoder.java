@@ -53,6 +53,17 @@ public class Encoder {
 			}
 	    	return null;
 	    }
+	    public static InputStream openInputStream(URL url, String agent){
+	    	try {
+		        URLConnection uRLConnection = url.openConnection();
+		        uRLConnection.setRequestProperty("User-Agent", agent);
+		        return uRLConnection.getInputStream();
+	    	}catch (Exception e) {
+				e.printStackTrace();
+				 System.err.println("Tried to open stream to " + url);
+			}
+	    	return null;
+	    }
 	 
 	
 }

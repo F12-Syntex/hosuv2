@@ -1,4 +1,4 @@
-package com.syntex.manga.cashe;
+package com.syntex.manga.queries;
 
 @FunctionalInterface
 public interface ICashable {

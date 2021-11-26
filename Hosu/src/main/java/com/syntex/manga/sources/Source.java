@@ -1,6 +1,5 @@
 package com.syntex.manga.sources;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -12,8 +11,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.google.gson.annotations.Expose;
-import com.syntex.manga.cashe.CasheHelper;
-import com.syntex.manga.cashe.CashingPool;
+import com.hosu.application.HosuClient;
 import com.syntex.manga.models.QueriedManga;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
@@ -32,17 +30,16 @@ public abstract class Source{
 	public abstract boolean nsfw();
 	
 	
-	public Callable<RequestQueryResults> requestCashedQueryResults() {
-		Callable<RequestQueryResults> cashed = this.getCashedQuery();
-		if(cashed != null) {
-			CashingPool.pool.execute(() -> {
-				try {
-					this.requestQueryResults().call();
-				} catch (Exception e) {}
-			});
-			return cashed;
+	public RequestQueryResults requestCashedQueryResults() {
+		RequestQueryResults result = HosuClient.database.getLatestQueryFile(this);
+		if(result == null) {
+			try {
+				return this.requestQueryResults().call();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		return this.requestQueryResults();
+		return result;
 	}
 	
 	/*
@@ -60,21 +57,5 @@ public abstract class Source{
 		} catch (Exception e) {}
 		
 		return "";
-	}
-	
-	protected Callable<RequestQueryResults> getCashedQuery(){
-		
-		List<RequestQueryResults> cashed = CasheHelper.deserialiseQuriedCasheFile(this);
-		
-		if(cashed == null) {
-			return null;
-		}
-		
-		if(cashed.size() > 0) {
-			return () -> cashed.get(0);
-		}
-		
-		return null;
-		
 	}
 }

@@ -28,6 +28,9 @@ public class HosuButton extends Pane {
 	private BufferedImage normal;
 	private BufferedImage hover;
 	
+	private javafx.scene.image.Image normalImage;
+	private javafx.scene.image.Image onHoverImage;
+	
 	public Color highlightedColour = null;
 	
 	private boolean toggle = false;
@@ -44,6 +47,9 @@ public class HosuButton extends Pane {
 		this.normal = resize(HosuClient.getInstance().getImageHandler().getImage(image), size, size);
 		this.hover = resize(HosuClient.getInstance().getImageHandler().getImage(onHover), size, size);
 		
+		this.normalImage = this.convertToFxImage(normal);
+		this.onHoverImage = this.convertToFxImage(hover);
+		
 		this.onClick = onClick;
 	}
 	
@@ -53,6 +59,8 @@ public class HosuButton extends Pane {
 		BufferedImage temp = this.normal;
 		this.normal = this.hover;
 		this.hover = temp;
+		this.normalImage = this.convertToFxImage(normal);
+		this.onHoverImage = this.convertToFxImage(hover);
 	}
 
 	public void setClicked(boolean clicked) {
@@ -94,11 +102,13 @@ public class HosuButton extends Pane {
 		StackPane pane = new StackPane();
 		
 		pane.setOnMouseEntered((e) -> {
-			this.content.setImage(this.convertToFxImage(hover));
+			//this.content.setImage(this.convertToFxImage(hover));
+			this.content.setImage(this.onHoverImage);
 		});
 		
 		pane.setOnMouseExited((e) -> {
-			this.content.setImage(this.convertToFxImage(normal));
+			//this.content.setImage(this.convertToFxImage(normal));
+			this.content.setImage(this.normalImage);
 		});
 		
 		pane.setOnMousePressed(onClick);

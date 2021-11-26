@@ -258,6 +258,7 @@ public class Player {
 			Platform.runLater(() -> {
 				this.view.setImage(this.node.getData().getCashedImages().get(index));
 				this.setReadingView();
+				this.stage.setTitle(this.manga.getManga().getAlt() + " - " + this.node.getData().getName());
 				System.out.println("page loaded.");
 			});
 			

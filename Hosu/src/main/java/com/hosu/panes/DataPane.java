@@ -121,8 +121,6 @@ public class DataPane extends Pane{
 					Image img = new Image("https://c.tenor.com/IHdlTRsmcS4AAAAC/404.gif");
 					view.setImage(img);
 				}
-				
-					System.out.println("loading img");
 					
 					Platform.runLater(() -> {
 					
@@ -157,6 +155,10 @@ public class DataPane extends Pane{
 		this.attachCss(pane, Styling.CONTENT_VIEW);
 		
 		return pane;
+	}
+	
+	public void reload() {
+		
 	}
 	
 	public LinkGrabber getURL() {
