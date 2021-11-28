@@ -18,6 +18,7 @@ public class PaneHandler {
 	private HomePage home;
 	
 	private AniContentPane aniContentPane;
+	private AniContentPaneManga mangaContentPane;
 	private MalContent malContent;
 	
 	public AniContentPane getAniContentPane() {
@@ -128,6 +129,7 @@ public class PaneHandler {
 		
 		this.malContent = new MalContent();
 		this.aniContentPane = new AniContentPane();
+		this.mangaContentPane = new AniContentPaneManga();
 		
 		this.setDefaultActivePane();
 	}
@@ -178,6 +180,14 @@ public class PaneHandler {
 
 	public void setMangaInfoPane(MangaInfoPane mangaInfoPane) {
 		this.mangaInfoPane = mangaInfoPane;
+	}
+
+	public AniContentPaneManga getMangaContentPane() {
+		return mangaContentPane;
+	}
+
+	public void setMangaContentPane(AniContentPaneManga mangaContentPane) {
+		this.mangaContentPane = mangaContentPane;
 	}
 	
 }

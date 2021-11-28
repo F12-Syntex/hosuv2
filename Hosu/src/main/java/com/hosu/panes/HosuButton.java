@@ -8,11 +8,15 @@ import com.hosu.application.HosuClient;
 import com.hosu.css.Image;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
@@ -32,6 +36,7 @@ public class HosuButton extends Pane {
 	private javafx.scene.image.Image onHoverImage;
 	
 	public Color highlightedColour = null;
+	public Color defaultColour = null;
 	
 	private boolean toggle = false;
 	
@@ -68,15 +73,16 @@ public class HosuButton extends Pane {
 	}
 	public boolean getClicked() {
 		return this.clicked;
-	}
+	} 
 	
 	public HosuButton setListener(EventHandler<? super MouseEvent> onClick) {
 		this.onClick = onClick;
 		return this;
 	}
 	
-	public HosuButton setHighlightedColour(Color color) {
-		this.highlightedColour = color;
+	public HosuButton setHighlightedColour(Color highlighted, Color normal) {
+		this.highlightedColour = highlighted;
+		this.defaultColour = normal;
 		return this;
 	}
 	
@@ -104,11 +110,17 @@ public class HosuButton extends Pane {
 		pane.setOnMouseEntered((e) -> {
 			//this.content.setImage(this.convertToFxImage(hover));
 			this.content.setImage(this.onHoverImage);
+			if(this.highlightedColour != null) {
+				pane.setBackground(new Background(new BackgroundFill(this.highlightedColour, new CornerRadii(0), Insets.EMPTY)));
+			}
 		});
 		
 		pane.setOnMouseExited((e) -> {
 			//this.content.setImage(this.convertToFxImage(normal));
 			this.content.setImage(this.normalImage);
+			if(this.highlightedColour != null) {
+				pane.setBackground(new Background(new BackgroundFill(this.defaultColour, new CornerRadii(0), Insets.EMPTY)));
+			}
 		});
 		
 		pane.setOnMousePressed(onClick);

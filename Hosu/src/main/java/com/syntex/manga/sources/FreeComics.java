@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import com.syntex.manga.models.Chapter;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
+import com.syntex.manga.queries.RequestAnimeData;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
 
@@ -26,7 +27,7 @@ public class FreeComics extends Source{
 					.split("<div class=\"xcontainer\">")[1]
 					.split("<div class=\"xpageon\">1</div>")[0];
 			
-			List<QueriedManga> mangas = new ArrayList<>();
+			List<QueriedEntity> mangas = new ArrayList<>();
 			
 			for(String i : data.split("<a href=\"")) {
 				if(!i.contains("<div class=\"bookinfo\">")) continue;
@@ -37,7 +38,7 @@ public class FreeComics extends Source{
 				String alt = section.split(url + "\" title=\"")[1].split("\"")[0];
 				String img = section.split("data-src=\"")[1].split("\"")[0];
 				
-				QueriedManga manga = new QueriedManga(img, alt, this, url);
+				QueriedEntity manga = new QueriedEntity(img, alt, this, url);
 				mangas.add(manga);
 			}
 			
@@ -49,7 +50,7 @@ public class FreeComics extends Source{
 	}
 
 	@Override
-	public Callable<RequestMangaData> requestMangaData(QueriedManga manga) {
+	public Callable<RequestMangaData> requestMangaData(QueriedEntity manga) {
 		
 		return () -> {
 		
@@ -79,6 +80,12 @@ public class FreeComics extends Source{
 	}
 
 	@Override
+	public Callable<RequestAnimeData> requestAnimeData(QueriedEntity manga) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public boolean nsfw() {
 		// TODO Auto-generated method stub
 		return true;
@@ -88,7 +95,7 @@ public class FreeComics extends Source{
 		try {
 			
 			long start = System.currentTimeMillis();
-			QueriedManga manga = new FreeComics("sex").requestQueryResults().call().getMangas().get(0);
+			QueriedEntity manga = new FreeComics("sex").requestQueryResults().call().getMangas().get(0);
 			manga.getAsManga();
 			RequestMangaData request = manga.getSource().requestMangaData(manga).call();
 			List<String> pages = request.getChapters().get(0).getPages();
@@ -101,5 +108,10 @@ public class FreeComics extends Source{
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Override
+	public SourceType sourceType() {
+		// TODO Auto-generated method stub
+		return SourceType.MANGA;
+	}
 }

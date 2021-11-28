@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 import org.json.JSONObject;
 
 import com.syntex.manga.models.Chapter;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
 import com.syntex.manga.utils.Encoder;
 
 public class Downloader {
@@ -45,7 +45,7 @@ public class Downloader {
 			
 			this.threadpool.execute(() -> {
 			
-				QueriedManga manga = data.get(0).getManga();
+				QueriedEntity manga = data.get(0).getManga();
 				
 				File downloads = new File(this.home, "Downloads");
 				File file = new File(downloads, Encoder.encode(manga.getAlt()).replace("+", " "));

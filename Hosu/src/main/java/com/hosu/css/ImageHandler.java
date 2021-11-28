@@ -17,12 +17,20 @@ public class ImageHandler {
 	private List<ImageStore> images;
 	
 	public Image loading;
+	
+	public Image loading1;
+	public Image loading2;
+	public Image loading3;
 	public Image imageLoading;
 	
 	public void initialise() {
 		
 		this.loading = new Image(getImageURL(com.hosu.css.Image.LOADING));
+		
+		this.loading1 = new Image(getImageURL(com.hosu.css.Image.LOADING));
 		this.imageLoading = new Image(getImageURL(com.hosu.css.Image.IMAGE_LOAD));
+		this.loading2 = new Image(getImageURL(com.hosu.css.Image.LOADER2));
+		this.loading3 = new Image(getImageURL(com.hosu.css.Image.LOADER3));
 		
 		images = new ArrayList<>();
 		

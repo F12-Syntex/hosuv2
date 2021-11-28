@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import com.syntex.manga.models.Chapter;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
+import com.syntex.manga.queries.RequestAnimeData;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
 
@@ -24,7 +25,7 @@ public class Manganato extends Source{
 		
 			String data = this.readURL("https://manganato.com/search/story/" + this.query.replace(" ", "_")).split("Page 1")[1];
 			
-			List<QueriedManga> mangas = new ArrayList<>();
+			List<QueriedEntity> mangas = new ArrayList<>();
 			
 			for(String i : data.split("</h3>")) {
 				if(!i.contains("<h3>")) continue;
@@ -38,7 +39,7 @@ public class Manganato extends Source{
 				String alt = section.split("title=\"")[1].split("\"")[0];
 				String image = section.split("src=\"")[1].split("\"")[0];
 				
-				QueriedManga manga = new QueriedManga(image, alt, this, url);
+				QueriedEntity manga = new QueriedEntity(image, alt, this, url);
 				mangas.add(manga);
 			}
 			
@@ -51,7 +52,7 @@ public class Manganato extends Source{
 	}
 
 	@Override
-	public Callable<RequestMangaData> requestMangaData(QueriedManga manga) {
+	public Callable<RequestMangaData> requestMangaData(QueriedEntity manga) {
 		return () -> {
 			String data = this.readURL(manga.getUrl());
 			
@@ -102,9 +103,20 @@ public class Manganato extends Source{
 	}
 	
 	@Override
+	public Callable<RequestAnimeData> requestAnimeData(QueriedEntity manga) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public boolean nsfw() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 	
+	@Override
+	public SourceType sourceType() {
+		// TODO Auto-generated method stub
+		return SourceType.MANGA;
+	}
 }

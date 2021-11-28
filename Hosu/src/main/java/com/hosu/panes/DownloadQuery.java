@@ -1,21 +1,21 @@
 package com.hosu.panes;
 
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
 
 public class DownloadQuery {
 
-	private QueriedManga manga;
+	private QueriedEntity manga;
 
-	public DownloadQuery(QueriedManga manga) {
+	public DownloadQuery(QueriedEntity manga) {
 		super();
 		this.manga = manga;
 	}
 
-	public QueriedManga getManga() {
+	public QueriedEntity getManga() {
 		return manga;
 	}
 
-	public void setManga(QueriedManga manga) {
+	public void setManga(QueriedEntity manga) {
 		this.manga = manga;
 	}
 	

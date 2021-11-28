@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import com.syntex.manga.models.Chapter;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
+import com.syntex.manga.queries.RequestAnimeData;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
 
@@ -22,7 +23,7 @@ public class HentaiRead extends Source{
 	
 		return () -> {
 	
-			List<QueriedManga> results = new ArrayList<>();
+			List<QueriedEntity> results = new ArrayList<>();
 			
 			try {
 			
@@ -49,7 +50,7 @@ public class HentaiRead extends Source{
 					url = url.trim();
 					name = name.trim();
 					
-					QueriedManga result = new QueriedManga(img, name, this, url);
+					QueriedEntity result = new QueriedEntity(img, name, this, url);
 					results.add(result);
 				}
 			}
@@ -69,7 +70,7 @@ public class HentaiRead extends Source{
 	}
 
 	@Override
-	public Callable<RequestMangaData> requestMangaData(QueriedManga manga) {
+	public Callable<RequestMangaData> requestMangaData(QueriedEntity manga) {
 	
 		return () -> {
 			
@@ -128,12 +129,18 @@ public class HentaiRead extends Source{
 		
 	}
 	
+	@Override
+	public Callable<RequestAnimeData> requestAnimeData(QueriedEntity manga) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public static void main(String[] args) {
 		try {
 			
 			long start = System.currentTimeMillis();
 			
-			QueriedManga manga = new HentaiRead("loli").requestQueryResults().call().getMangas().get(0);
+			QueriedEntity manga = new HentaiRead("loli").requestQueryResults().call().getMangas().get(0);
 			
 			//System.out.println("Found " + manga.getUrl());
 			
@@ -156,6 +163,12 @@ public class HentaiRead extends Source{
 	public boolean nsfw() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	@Override
+	public SourceType sourceType() {
+		// TODO Auto-generated method stub
+		return SourceType.MANGA;
 	}
 
 }

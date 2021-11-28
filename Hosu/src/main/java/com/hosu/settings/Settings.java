@@ -11,4 +11,6 @@ public class Settings {
 	public static Margin DEFAULT_MARGIN = new Margin(5, 5);
 	public static Dimension SIZE = Windows.getScaledDimentions(1033, 788);
 	
+	//public static Dimension SIZE = Windows.getScaledDimentions(1920, 1080);
+	
 }

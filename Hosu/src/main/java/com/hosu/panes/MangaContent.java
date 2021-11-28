@@ -4,12 +4,15 @@ import java.lang.reflect.Constructor;
 
 import com.hosu.application.HosuClient;
 import com.hosu.css.Styling;
+import com.hosu.helpers.PanesHelper;
 import com.hosu.mangaplayer.Player;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.api.MangaAPI;
+import com.syntex.manga.models.QueriedEntity;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
 import com.syntex.manga.sources.Domain;
 import com.syntex.manga.sources.Source;
+import com.syntex.manga.sources.SourceType;
 import com.syntex.manga.utils.NumberUtils;
 
 import javafx.application.Platform;
@@ -32,7 +35,7 @@ public class MangaContent extends SearchableContent{
 		//this.maxRows = 2.5;
 		this.maxColumns = 5.6;
 		this.maxRows = 3;
-		
+				
 	}
 	
 	@Override
@@ -47,6 +50,8 @@ public class MangaContent extends SearchableContent{
 		scroallable.setFitToWidth(true);
 		scroallable.setMaxWidth(HosuClient.getInstance().getBody().getPrefWidth());
 		
+		PanesHelper.scrollWheelToMiddle(scroallable);
+		
 		pane.setId("contentPane");
 		scroallable.setId("contentPane");
 		
@@ -60,6 +65,10 @@ public class MangaContent extends SearchableContent{
 		
 		this.firstSearch = false;
 
+		new Thread(() -> {
+			MangaAPI.search("Overlord", Domain.ANIME_FLIX);
+		}).start();
+		
 		return returnPane;
 	}
 
@@ -86,7 +95,7 @@ public class MangaContent extends SearchableContent{
 					//374291
 					String url = "https://nhentai.to/g/" + name.trim();
 					
-					RequestMangaData request = invoke.requestMangaData(new QueriedManga("", name, invoke, url)).call();
+					RequestMangaData request = invoke.requestMangaData(new QueriedEntity("", name, invoke, url)).call();
 					
 					Platform.runLater(() -> {
 						try {
@@ -115,8 +124,19 @@ public class MangaContent extends SearchableContent{
 						
 						this.buffer();
 						
+						
+						
 						MangaInfoPane pane = HosuClient.getInstance().getPaneHandler().getMangaInfoPane();
-						pane.setMangaData(e);
+						
+						if(e.getSource().sourceType() == SourceType.ANIME) {
+							pane.setAnimeData(e);
+						}
+						
+						if(e.getSource().sourceType() == SourceType.MANGA) {
+							pane.setMangaData(e);
+						}
+						
+						
 						
 						HosuClient.getInstance().getPaneHandler().setActive(pane);
 						

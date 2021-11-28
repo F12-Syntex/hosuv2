@@ -19,7 +19,7 @@ public class Chapter implements IDownloadable{
 
 	private String name;
 	private String url;
-	private QueriedManga manga;
+	private QueriedEntity manga;
 	public Callable<List<String>> pages;
 
 	private List<String> cashedPages = new ArrayList<>();
@@ -27,7 +27,7 @@ public class Chapter implements IDownloadable{
 	
 	private boolean imagesCashed = false;
 	
-	public Chapter(QueriedManga manga, String name, String url, Callable<List<String>> pages) {
+	public Chapter(QueriedEntity manga, String name, String url, Callable<List<String>> pages) {
 		this.name = name;
 		this.url = url;
 		this.manga = manga;
@@ -50,11 +50,11 @@ public class Chapter implements IDownloadable{
 		this.url = url;
 	}
 
-	public QueriedManga getManga() {
+	public QueriedEntity getManga() {
 		return manga;
 	}
 
-	public void setManga(QueriedManga manga) {
+	public void setManga(QueriedEntity manga) {
 		this.manga = manga;
 	}
 

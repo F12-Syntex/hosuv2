@@ -9,11 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
 import com.syntex.manga.queries.RequestQueryResults;
 import com.syntex.manga.sources.Domain;
 import com.syntex.manga.sources.Source;
@@ -33,8 +35,11 @@ public class Database {
 	
 	private Connection connection;
 	
-	private List<RequestQueryResults> cashedQueryResults;
+	public List<RequestQueryResults> cashedQueryResults;
 	private List<RequestQueryResults> cashedMangaData;
+	
+	public SortedSet<String> mangaQueries = new TreeSet<>();
+	public SortedSet<String> liked = new TreeSet<>();
 	
 	private File hosu;
 	
@@ -79,6 +84,10 @@ public class Database {
 		
 	}
 
+	public void getSuggestions() {
+		
+	}
+	
 	/*
 	 * connect to the mysql server, then register the database
 	 * 
@@ -86,10 +95,13 @@ public class Database {
 	 * @throws SQLException if connection to the database cannot be established.
 	 */
 	public void connect() {
-		threadpool.execute(() -> {
+		//threadpool.execute(() -> {
 			if(!this.isConnected()) {
 				try {
 
+					Class.forName("com.mysql.jdbc.Driver"); 
+					Class.forName("org.sqlite.JDBC");
+					
 					if(this.localDB) {
 						this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.hosu);
 					}else {
@@ -100,13 +112,13 @@ public class Database {
 								  	this.getPassword());	
 					}
 					
-					System.out.println("Connection to database has been established.");
 					this.setup();
+					System.out.println("Connection to database has been established.");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		});
+		//});
 	}
 
 	/*
@@ -154,11 +166,100 @@ public class Database {
 		statement.executeUpdate();
 		statement.close();
 		
+		/*
+		 * create manga table
+		 */
+		statement = this.connection.prepareStatement("CREATE TABLE IF NOT EXISTS MANGA(COUNTER INTEGER AUTO_INCREMENT, SEARCH TINYTEXT, PRIMARY KEY(COUNTER));");
+		statement.executeUpdate();
+		statement.close();
+		
+		/*
+		 * create liked table
+		 */
+		statement = this.connection.prepareStatement("CREATE TABLE IF NOT EXISTS LIKED(COUNTER INTEGER AUTO_INCREMENT, NAME TINYTEXT, PRIMARY KEY(COUNTER));");
+		statement.executeUpdate();
+		statement.close();
+		
 		//System.out.println("Created tables, loading sample query request.");
 		//RequestQueryResults results = MangaAPI.search("", Domain.MANGA_STREAM).requestQueryResults().call();
 		//this.logQueryRequest(results);
 		
 		this.setCashedQueryResults(this.requestQueryResults().call());
+		
+		//cashe the suggestions.
+		ResultSet query = this.connection.createStatement().executeQuery("SELECT * FROM MANGA");
+		
+		//get query attributes.
+		while(query.next()) {
+	        String search = query.getString("SEARCH");
+	        this.mangaQueries.add(search);
+		}
+		
+		//cashe the liked.
+		ResultSet likedQuery = this.connection.createStatement().executeQuery("SELECT * FROM LIKED");
+		
+		//get query attributes.
+		while(likedQuery.next()) {
+	        String search = likedQuery.getString("NAME");
+	        this.liked.add(search);
+		}
+		
+	}
+	
+	public void writeManga(List<String> contents) {
+		for(String i : contents) {
+			PreparedStatement statement;
+			
+			try {
+			
+				//System.out.println("INSERT INTO MANGA (SEARCH) VALUES(\"" + i + "\");");
+				statement = this.connection.prepareStatement("INSERT INTO MANGA (SEARCH) VALUES(\"" + i + "\");");
+				statement.executeUpdate();
+				statement.close();
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch blockO
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/*
+	 * add a liked manga.
+	 */
+	public void addLiked(String contents) {
+		PreparedStatement statement;
+		
+		try {
+		
+			//System.out.println("INSERT INTO MANGA (SEARCH) VALUES(\"" + i + "\");");
+			statement = this.connection.prepareStatement("INSERT INTO LIKED (NAME) VALUES(\"" + contents + "\");");
+			statement.executeUpdate();
+			statement.close();
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch blockO
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * remove a liked manga.
+	 */
+	public void removeLiked(String contents) {
+		PreparedStatement statement;
+		
+		try {
+		
+			//System.out.println("INSERT INTO MANGA (SEARCH) VALUES(\"" + i + "\");");
+			statement = this.connection.prepareStatement("DELETE from LIKED where NAME = \"" + contents + "\"; ");
+			statement.executeUpdate();
+			statement.close();
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch blockO
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -194,7 +295,7 @@ public class Database {
 					statement.close();
 				}
 				
-				for(QueriedManga i : result.getMangas()) {
+				for(QueriedEntity i : result.getMangas()) {
 					//write the data
 					System.out.println("INSERT INTO queriedmanga (IMAGE, ALT, SCRAPPER, URL, SEARCH) VALUES(\"" + i.getImage() + "\", \"" + i.getAlt() + "\", \"" + i.getDomain().name() + "\", \"" + i.getUrl() + "\", \"" + i.query + "\");");
 					statement = this.connection.prepareStatement("INSERT INTO queriedmanga (IMAGE, ALT, SCRAPPER, URL, SEARCH) VALUES(\"" + i.getImage() + "\", \"" + i.getAlt() + "\", \"" + i.getDomain().name() + "\", \"" + i.getUrl() + "\", \"" + i.query + "\");");
@@ -235,7 +336,7 @@ public class Database {
 			        
 			        ResultSet mangaQuery = this.connection.createStatement().executeQuery("SELECT * FROM queriedmanga where SEARCH = \"" + search + "\" AND SCRAPPER = \"" + scrapper + "\";");
 
-					List<QueriedManga> mangas = new ArrayList<>();
+					List<QueriedEntity> mangas = new ArrayList<>();
 					
 					//get mangas
 					while (mangaQuery.next()){
@@ -243,7 +344,7 @@ public class Database {
 				        String alt = mangaQuery.getString("ALT");
 				        String url = mangaQuery.getString("URL");
 				        
-				        QueriedManga manga = new QueriedManga(image, alt, source, url);
+				        QueriedEntity manga = new QueriedEntity(image, alt, source, url);
 				        mangas.add(manga);
 				      }
 					

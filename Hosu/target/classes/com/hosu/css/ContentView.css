@@ -1,0 +1,9 @@
+#pane{
+	-fx-background-color: rgba(0, 0, 0, 0.5);
+}
+#content{
+  -fx-background-color: #181c2e
+}
+#shadow{
+	-fx-background-color: rgba(0, 0, 0, 0.6);
+}

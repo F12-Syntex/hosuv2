@@ -12,5 +12,8 @@ public class Testing {
 			e.printStackTrace();
 		}
 		
+		Scrapper scrapper = new Scrapper();
+		scrapper.run(database);
+		
 	}
 }

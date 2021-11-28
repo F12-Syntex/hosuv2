@@ -1,10 +1,11 @@
 package com.syntex.manga.models;
 
+import com.syntex.manga.queries.RequestAnimeData;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.sources.Domain;
 import com.syntex.manga.sources.Source;
 
-public class QueriedManga {
+public class QueriedEntity {
 
 	private String image;
 	private String alt;
@@ -15,7 +16,7 @@ public class QueriedManga {
 	
 	public String query;
 	
-	public QueriedManga(String image, String alt, Source source, String url) {
+	public QueriedEntity(String image, String alt, Source source, String url) {
 		this.image = image;
 		this.alt = alt;
 		this.source = Domain.fromClass(source.getClass());
@@ -52,6 +53,15 @@ public class QueriedManga {
 	public RequestMangaData getAsManga() {
 		try {
 			return getSource().requestMangaData(this).call();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public RequestAnimeData getAsAnime() {
+		try {
+			return getSource().requestAnimeData(this).call();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

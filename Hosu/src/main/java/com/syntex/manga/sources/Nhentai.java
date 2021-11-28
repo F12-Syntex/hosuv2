@@ -8,7 +8,8 @@ import java.util.TreeMap;
 import java.util.concurrent.Callable;
 
 import com.syntex.manga.models.Chapter;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
+import com.syntex.manga.queries.RequestAnimeData;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
 
@@ -21,7 +22,7 @@ public class Nhentai extends Source{
 	@Override
 	public Callable<RequestQueryResults> requestQueryResults() {
 		
-		List<QueriedManga> mangas = new ArrayList<>();
+		List<QueriedEntity> mangas = new ArrayList<>();
 		
 		return () -> {
 		
@@ -38,7 +39,7 @@ public class Nhentai extends Source{
 				String image = i.split("img src=\"")[1].split("\"")[0];
 				String alt = i.split("div class=\"caption\">")[1].split("</div>")[0];
 				
-				QueriedManga manga = new QueriedManga(image, alt, this, url);
+				QueriedEntity manga = new QueriedEntity(image, alt, this, url);
 				mangas.add(manga);
 			}
 			
@@ -57,7 +58,7 @@ public class Nhentai extends Source{
 	}
 
 	@Override
-	public Callable<RequestMangaData> requestMangaData(QueriedManga manga) {
+	public Callable<RequestMangaData> requestMangaData(QueriedEntity manga) {
 		
 		return () -> {
 			
@@ -135,11 +136,17 @@ public class Nhentai extends Source{
 		return o;
 	}
 	
+	@Override
+	public Callable<RequestAnimeData> requestAnimeData(QueriedEntity manga) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public static void main(String[] args) {
 		try {
 			
 			long start = System.currentTimeMillis();
-			QueriedManga manga = new Nhentai("loli").requestQueryResults().call().getMangas().get(0);
+			QueriedEntity manga = new Nhentai("loli").requestQueryResults().call().getMangas().get(0);
 			RequestMangaData request = manga.getSource().requestMangaData(manga).call();
 			List<String> pages = request.getChapters().get(0).getPages();
 			
@@ -157,5 +164,10 @@ public class Nhentai extends Source{
 		// TODO Auto-generated method stub
 		return true;
 	}
-
+	
+	@Override
+	public SourceType sourceType() {
+		// TODO Auto-generated method stub
+		return SourceType.MANGA;
+	}
 }

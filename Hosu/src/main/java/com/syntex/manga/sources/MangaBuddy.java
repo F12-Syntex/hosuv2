@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import com.syntex.manga.models.Chapter;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
+import com.syntex.manga.queries.RequestAnimeData;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
 
@@ -24,7 +25,7 @@ public class MangaBuddy extends Source{
 		
 			String data = this.readURL("https://mangabuddy.com/search?q=" + this.query.replace(" ", "+"));
 			
-			List<QueriedManga> mangas = new ArrayList<>();
+			List<QueriedEntity> mangas = new ArrayList<>();
 			
 			for(String section : data.split("<div class=\"section-body\">")[1].split("</div></div><script>")[0].split("<a title=")) {
 				if(!section.contains("data-src")) continue;
@@ -32,7 +33,7 @@ public class MangaBuddy extends Source{
 				String image = "https:" + section.split("data-src=\"")[1].split("\"")[0];
 				String url = "https://mangabuddy.com" + section.split("href=\"")[1].split("\"")[0];
 				
-				QueriedManga manga = new QueriedManga(image, alt, this, url);
+				QueriedEntity manga = new QueriedEntity(image, alt, this, url);
 				mangas.add(manga);
 			}
 			
@@ -45,7 +46,7 @@ public class MangaBuddy extends Source{
 	}
 
 	@Override
-	public Callable<RequestMangaData> requestMangaData(QueriedManga manga) {
+	public Callable<RequestMangaData> requestMangaData(QueriedEntity manga) {
 		
 		return () -> {
 		
@@ -95,12 +96,18 @@ public class MangaBuddy extends Source{
 		};
 		
 	}
+	
+	@Override
+	public Callable<RequestAnimeData> requestAnimeData(QueriedEntity manga) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public static void main(String[] args) {
 		try {
 			
 			long start = System.currentTimeMillis();
-			QueriedManga manga = new MangaBuddy("sex").requestQueryResults().call().getMangas().get(0);
+			QueriedEntity manga = new MangaBuddy("sex").requestQueryResults().call().getMangas().get(0);
 			RequestMangaData request = manga.getSource().requestMangaData(manga).call();
 			List<String> pages = request.getChapters().get(0).getPages();
 			
@@ -119,4 +126,9 @@ public class MangaBuddy extends Source{
 		return false;
 	}
 	
+	@Override
+	public SourceType sourceType() {
+		// TODO Auto-generated method stub
+		return SourceType.MANGA;
+	}
 }

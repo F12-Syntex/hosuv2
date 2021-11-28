@@ -100,7 +100,7 @@ public class MalContent extends SearchableContent{
 							
 							this.buffer();
 							
-							AniContentPane pane = HosuClient.getInstance().getPaneHandler().getAniContentPane();
+							AniContentPaneManga pane = HosuClient.getInstance().getPaneHandler().getMangaContentPane();
 							pane.setMangaData(jikan.query().manga().get(a.malId).execute().block());
 							
 							HosuClient.getInstance().getPaneHandler().setActive(pane);

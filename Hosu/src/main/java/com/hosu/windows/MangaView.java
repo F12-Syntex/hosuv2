@@ -2,7 +2,7 @@ package com.hosu.windows;
 
 import com.hosu.application.HosuClient;
 import com.hosu.css.Styling;
-import com.hosu.panes.AniContentPane;
+import com.hosu.panes.AniContentPaneManga;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -14,7 +14,7 @@ public class MangaView {
 	
 	public static void show(Manga manga) {
 
-		AniContentPane pane = HosuClient.getInstance().getPaneHandler().getAniContentPane();
+		AniContentPaneManga pane = HosuClient.getInstance().getPaneHandler().getMangaContentPane();
 		pane.setMangaData(manga);
 		
 		VBox data = (VBox) pane.get();

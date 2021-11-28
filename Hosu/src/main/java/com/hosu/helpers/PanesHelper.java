@@ -35,6 +35,19 @@ public class PanesHelper {
 	    }
 	}
 	
+	public static void scrollWheelToMiddle(ScrollPane scrollPane) {
+		if(scrollPane == null) return;
+	    for (Node node : scrollPane.lookupAll(".scroll-bar")) {
+	        if (node instanceof ScrollBar) {
+	            ScrollBar scrollBar = (ScrollBar) node;
+	            if (scrollBar.getOrientation() == Orientation.HORIZONTAL) {
+	            	scrollBar.setValue(scrollBar.getMax());
+	            }
+
+	        }
+	    }
+	}
+	
 	public static void scrollWheelToBottom(ScrollPane scrollPane) {
 		if(scrollPane == null) return;
 	    for (Node node : scrollPane.lookupAll(".scroll-bar")) {

@@ -7,7 +7,6 @@ import com.hosu.application.HosuClient;
 import com.hosu.css.Styling;
 import com.hosu.helpers.PanesHelper;
 
-import io.netty.util.internal.ThreadLocalRandom;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -94,10 +93,6 @@ public class HomePage extends Pane{
 				}
 			}).start();
 			
-			HosuButton minimize = new HosuButton(com.hosu.css.Image.DROP_DOWN, com.hosu.css.Image.DOUBLE_DROP_DOWN, 32, null);
-			
-			
-			
 			//A verticle pane to store nodes.
 			VBox detailsBox = new VBox();
 			detailsBox.setId("content3");
@@ -121,6 +116,8 @@ public class HomePage extends Pane{
 			//an element to be added to the verticle pane, details box.
 			//PixelMatrix mat = new PixelMatrix();
 			//detailsBox.getChildren().add(mat);
+			
+			HosuButton minimize = new HosuButton(com.hosu.css.Image.DROP_DOWN, com.hosu.css.Image.DOUBLE_DROP_DOWN, 32, null);
 			
 			minimize.setListener((e) -> {
 

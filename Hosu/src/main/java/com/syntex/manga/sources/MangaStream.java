@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import com.syntex.manga.models.Chapter;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
+import com.syntex.manga.queries.RequestAnimeData;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
 import com.syntex.manga.utils.TagUtils;
@@ -25,7 +26,7 @@ public class MangaStream extends Source{
 		return () -> {
 			
 			String name = this.query;
-			List<QueriedManga> mangas = new ArrayList<>();
+			List<QueriedEntity> mangas = new ArrayList<>();
 			
 			String data = this.readURL("http://mangastream.mobi/search?q=" + this.query.replace(" ", "+"));
 			
@@ -50,7 +51,7 @@ public class MangaStream extends Source{
 				String alt = j[3].split("\"")[1].split("\"")[0];
 				String url = j[1].split("\"")[1].split("\"")[0];
 				
-				QueriedManga manga = new QueriedManga(img, alt, this, url);
+				QueriedEntity manga = new QueriedEntity(img, alt, this, url);
 				mangas.add(manga);
 			}
 			
@@ -60,7 +61,7 @@ public class MangaStream extends Source{
 	}
 
 	@Override
-	public Callable<RequestMangaData> requestMangaData(QueriedManga manga) {
+	public Callable<RequestMangaData> requestMangaData(QueriedEntity manga) {
 		return () -> {
 			
 			String data = this.readURL(manga.getUrl());
@@ -95,31 +96,37 @@ public class MangaStream extends Source{
 			List<Chapter> chapters = new ArrayList<Chapter>();
 			
 			for(String chapterData : chapterLines) {
-				String name = chapterData.split("title")[1].split(">")[1].split("<")[0].trim();
-				String url = chapterData.split("<a  href=\"")[1].split("\"")[0].trim();
-				String span = chapterData.split("<span>")[1].split("</span>")[0].trim();
-				if(!span.isEmpty()) {
-					name = span;
-				}
-				
-				Callable<List<String>> pages = () -> {
-					String pageData = this.readURL(url);
-					
-					String[] images = pageData.split("<p id=arraydata style=display:none>")[1].split("<")[0].split(",");
-					
-					List<String> chapterPages = new LinkedList<>();
-					
-					for(String page : images) {
-						String pageURL = page.trim();
-						chapterPages.add(pageURL);
+				try {
+					String name = chapterData.split("title")[1].split(">")[1].split("<")[0].trim();
+					String url = chapterData.split("href=\"")[1].split("\"")[0].trim();
+					String span = chapterData.split("<span>")[1].split("</span>")[0].trim();
+					if(!span.isEmpty()) {
+						name = span;
 					}
 					
-					return chapterPages;	
-				};
-				
-				
-				Chapter chapter = new Chapter(manga, name, url, pages);
-				chapters.add(chapter);
+					Callable<List<String>> pages = () -> {
+						String pageData = this.readURL(url);
+						
+						String[] images = pageData.split("<p id=arraydata style=display:none>")[1].split("<")[0].split(",");
+						
+						List<String> chapterPages = new LinkedList<>();
+						
+						for(String page : images) {
+							String pageURL = page.trim();
+							chapterPages.add(pageURL);
+						}
+						
+						return chapterPages;	
+					};
+					
+					
+					Chapter chapter = new Chapter(manga, name, url, pages);
+					chapters.add(chapter);	
+				}catch (Exception e) {
+					
+					System.out.println(chapterData);
+					
+				}
 			}
 			
 			RequestMangaData requestedData = new RequestMangaData(manga, values, chapters);
@@ -134,4 +141,27 @@ public class MangaStream extends Source{
 		return false;
 	}
 	
+	@Override
+	public Callable<RequestAnimeData> requestAnimeData(QueriedEntity manga) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public static void main(String[] args) {
+		try {
+			new MangaStream("").requestQueryResults().call().getMangas().forEach(i -> {
+				System.out.println(i.getAlt());
+				i.getAsManga();
+			});
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public SourceType sourceType() {
+		// TODO Auto-generated method stub
+		return SourceType.MANGA;
+	}
 }

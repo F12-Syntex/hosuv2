@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.hosu.application.HosuClient;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
 import com.syntex.manga.sources.Domain;
 import com.syntex.manga.sources.Source;
 
@@ -13,11 +13,11 @@ public class RequestQueryResults implements ICashable{
 
 	private String query; 
 	private int queries;
-	private List<QueriedManga> mangas;
+	private List<QueriedEntity> mangas;
 	private String source;
 	private String creation;
 	
-	public RequestQueryResults(Source source, String query, List<QueriedManga> mangas) {
+	public RequestQueryResults(Source source, String query, List<QueriedEntity> mangas) {
 		this.query = query;
 		this.mangas = mangas;
 		this.queries = mangas.size();
@@ -31,7 +31,7 @@ public class RequestQueryResults implements ICashable{
 		this.cashe();
 	}
 	
-	public RequestQueryResults(Source source, String query, List<QueriedManga> mangas, String creation) {
+	public RequestQueryResults(Source source, String query, List<QueriedEntity> mangas, String creation) {
 		this.query = query;
 		this.mangas = mangas;
 		this.queries = mangas.size();
@@ -56,11 +56,11 @@ public class RequestQueryResults implements ICashable{
 		this.queries = queries;
 	}
 
-	public List<QueriedManga> getMangas() {
+	public List<QueriedEntity> getMangas() {
 		return mangas;
 	}
 
-	public void setMangas(List<QueriedManga> mangas) {
+	public void setMangas(List<QueriedEntity> mangas) {
 		this.mangas = mangas;
 	}
 

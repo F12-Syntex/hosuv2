@@ -6,8 +6,8 @@ public enum Domain {
 
 	DOUJIN(Doujins.class), FREE_COMICS(FreeComics.class),
 	HENTAI_READ(HentaiRead.class), MANGA_BUDDY(MangaBuddy.class),
-	MANGA_DEX(MangaDex.class), MANGANATO(Manganato.class), MANGAOWL(MangaOwl.class),
-	MANGA_STREAM(MangaStream.class), NHENTAI(Nhentai.class), NINECOMICS(NineComics.class);
+	MANGA_DEX(MangaDex.class), MANGA_NATO(Manganato.class), MANGA_OWL(MangaOwl.class),
+	MANGA_STREAM(MangaStream.class), NHENTAI(Nhentai.class), ANIME_FLIX(AnimeFlix.class);
 
 	public final String CLASS_PATH;
 	

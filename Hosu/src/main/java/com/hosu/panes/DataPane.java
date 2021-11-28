@@ -7,7 +7,7 @@ import com.hosu.application.HosuClient;
 import com.hosu.css.Styling;
 import com.hosu.settings.LinkGrabber;
 import com.hosu.settings.onImageClick;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
 import com.syntex.manga.utils.Encoder;
 
 import javafx.application.Platform;
@@ -34,9 +34,9 @@ public class DataPane extends Pane{
 	
 	private static Font font = new Font(16);
 	
-	private final QueriedManga manga;
+	private final QueriedEntity manga;
 	
-	public DataPane(LinkGrabber URL, double prefWidth, double prefHeight, onImageClick e, QueriedManga manga) {
+	public DataPane(LinkGrabber URL, double prefWidth, double prefHeight, onImageClick e, QueriedEntity manga) {
 		this.URL = URL;
 		this.width = prefWidth;
 		this.height = prefHeight;
@@ -60,6 +60,8 @@ public class DataPane extends Pane{
 		ImageView view = new ImageView(HosuClient.getInstance().getImageHandler().loading);
 		
 		view.setCache(true);
+		
+		view.setPreserveRatio(true);
 		
 		if(width != -1 && height != -1) {
 			view.setFitWidth(width);
@@ -113,12 +115,15 @@ public class DataPane extends Pane{
 					if(img.isError()) {
 						System.out.println("Image failed.");
 					}
-	
+					
+					view.setPreserveRatio(true);
 					view.setImage(img);
 	
 					
 				}catch (Exception e) {
 					Image img = new Image("https://c.tenor.com/IHdlTRsmcS4AAAAC/404.gif");
+					
+					view.setPreserveRatio(true);
 					view.setImage(img);
 				}
 					

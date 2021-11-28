@@ -2,25 +2,33 @@ package com.hosu.application;
 	
 import java.awt.Dimension;
 
+import org.controlsfx.control.PopOver;
+
 import com.hosu.css.CssManager;
 import com.hosu.css.ImageHandler;
 import com.hosu.css.Styling;
 import com.hosu.database.Database;
 import com.hosu.helpers.Windows;
+import com.hosu.panes.HosuButton;
+import com.hosu.panes.Loader;
 import com.hosu.panes.PaneHandler;
 import com.hosu.settings.Settings;
+import com.hosu.windows.EmbedViewer;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -36,6 +44,8 @@ public class HosuClient extends Application {
 	
 	private PaneHandler paneHandler;
 	private Stage stage;
+	
+	private VBox side;
 	
 	private VBox body;
 	
@@ -65,6 +75,76 @@ public class HosuClient extends Application {
         root.getStylesheets().add(this.cssManager.getCss(Styling.HOSU));
         root.setId("root");  
         
+        this.side = new VBox();  
+        
+        side.getStylesheets().add(this.cssManager.getCss(Styling.HOSU));
+        side.setMinWidth(40);
+        side.setMaxWidth(40);
+        side.setId("side");
+
+        //.setHighlightedColour(Color.web("#0d101c"), Color.web("#181c2e"))
+        
+		HosuButton minimize = new HosuButton(com.hosu.css.Image.SEARCH_OFF, com.hosu.css.Image.SEARCH_ON, 28, (e) -> {
+			this.paneHandler.getHosuBar().lastSet = this.paneHandler.getMangaContent();
+			this.paneHandler.setActiveWithSearch(this.paneHandler.getMangaContent());
+			this.paneHandler.getMangaContent().get();
+		});
+		HosuButton downloads = new HosuButton(com.hosu.css.Image.DOWNLOADS, com.hosu.css.Image.DOWNLOADS, 28, (e) -> {
+			this.paneHandler.getHosuBar().lastSet = this.paneHandler.getMangaContent();
+			this.paneHandler.setActive(this.paneHandler.getHome());
+			this.paneHandler.getMangaContent().get();
+		});
+		StackPane icons = (StackPane) new HosuButton(com.hosu.css.Image.ICONS, com.hosu.css.Image.ICONS, 28, (e) -> {
+				
+		}).get();
+		
+		StackPane source = (StackPane) new HosuButton(com.hosu.css.Image.SAUCE, com.hosu.css.Image.SAUCE, 28, (e) -> {
+			EmbedViewer.show("https://saucenao.com/");
+			//EmbedViewer.show("https://embed.animeflix.ws/video.php?id=MTc1MTQ5&title=Scarlet+Nexus&typesub=SUB&sub=&cover=Y292ZXIvc2NhcmxldC1uZXh1cy5wbmc=-#-default");
+		}).get();
+        
+		//side offYOffset
+		StackPane empty = new StackPane();
+		//empty.setMinHeight(Settings.SIZE.getHeight() / 10);
+		//empty.setMaxHeight(Settings.SIZE.getHeight() / 10);
+		
+		side.getChildren().add(empty);
+		side.getChildren().add(minimize.get());
+		side.getChildren().add(downloads.get());
+		side.getChildren().add(icons);
+		
+		
+		
+		
+		
+		side.getChildren().add(source);
+        		
+		side.setAlignment(Pos.TOP_CENTER);
+
+        PopOver popOver = new PopOver();
+        popOver.setDetachable(false);
+        popOver.setAutoHide(false);
+        popOver.setHideOnEscape(false);
+        popOver.setAutoHide(true);
+        
+        popOver.setAnimated(true);
+        popOver.setId("popover");
+
+        
+        
+		icons.setOnMousePressed((e) -> {
+			if(!popOver.isShowing()) {
+				Pane test = new Loader(popOver).get();
+		        popOver.setContentNode(test);
+				popOver.show(icons);	
+			}else {
+				popOver.hide();
+			}
+		});
+		
+		icons.setId("popover");
+		icons.getStylesheets().add(this.cssManager.getCss(Styling.HOSU));
+		
         Dimension size = Settings.SIZE;
       
         root.setPrefSize(size.getWidth(), size.getHeight());
@@ -86,8 +166,12 @@ public class HosuClient extends Application {
              
             //body.getChildren().add(this.paneHandler.getHome().get());
             
+            HBox container = new HBox();
+    		container.getChildren().add(side);
+    		container.getChildren().add(body);
+            
             root.getChildren().add(top);
-            root.getChildren().add(body);
+            root.getChildren().add(container);
             
             StackPane bottom = new StackPane();
             bottom.setPrefHeight(size.getHeight()/30);
@@ -109,8 +193,7 @@ public class HosuClient extends Application {
 			this.paneHandler.getHome().get();
 			this.paneHandler.setActiveWithSearch(this.paneHandler.getMangaContent());
 			this.paneHandler.getMangaContent().get();
-            
-            
+
         	//ResizeHelper.addResizeListener(primaryStage, size.getWidth()/2, size.getHeight(), Integer.MAX_VALUE, Integer.MAX_VALUE);            
             
         }catch (Exception e) {

@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import com.syntex.manga.models.Chapter;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
+import com.syntex.manga.queries.RequestAnimeData;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
 
@@ -26,7 +27,7 @@ public class MangaDex extends Source{
 		
 			String data = this.readURL("https://mangadex.tv/search?type=titles&title=" + this.query.replace(" ", "+") + "&submit=").split("<div class=\"container\" role=\"main\" id=\"content\">")[1];
 			
-			List<QueriedManga> mangas = new ArrayList<>();
+			List<QueriedEntity> mangas = new ArrayList<>();
 			
 			for(String section : data.split("manga-entry col-lg-6 border-bottom pl-0 my-1")) {
 				String[] splitter = section.split("<div style=\"height: 210px; overflow: hidden;\">");
@@ -38,7 +39,7 @@ public class MangaDex extends Source{
 				String url = domain + content.split("<a class=\"ml-1 manga_title text-truncate\"")[1].split("href=\"")[1].split("\"")[0];
 				String img = domain + content.split("data-src=\"")[1].split("\"")[0];
 				
-				QueriedManga manga = new QueriedManga(img, alt, this, url);
+				QueriedEntity manga = new QueriedEntity(img, alt, this, url);
 				mangas.add(manga);
 			}
 			
@@ -50,7 +51,7 @@ public class MangaDex extends Source{
 	}
 
 	@Override
-	public Callable<RequestMangaData> requestMangaData(QueriedManga manga) {
+	public Callable<RequestMangaData> requestMangaData(QueriedEntity manga) {
 
 		return () -> {
 		
@@ -129,12 +130,18 @@ public class MangaDex extends Source{
 		};
 	}
 
+	@Override
+	public Callable<RequestAnimeData> requestAnimeData(QueriedEntity manga) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public static void main(String[] args) {
 		try {
 			
 			long start = System.currentTimeMillis();
 			
-			QueriedManga manga = new MangaDex("loli").requestQueryResults().call().getMangas().get(0);
+			QueriedEntity manga = new MangaDex("loli").requestQueryResults().call().getMangas().get(0);
 			
 			System.out.println("Found " + manga.getUrl());
 			
@@ -161,4 +168,9 @@ public class MangaDex extends Source{
 		return false;
 	}
 	
+	@Override
+	public SourceType sourceType() {
+		// TODO Auto-generated method stub
+		return SourceType.MANGA;
+	}
 }

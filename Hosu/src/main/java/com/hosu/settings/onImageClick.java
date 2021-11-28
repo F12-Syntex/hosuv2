@@ -1,8 +1,8 @@
 package com.hosu.settings;
 
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
 
 @FunctionalInterface
 public interface onImageClick {
-	public void onClick(QueriedManga img);
+	public void onClick(QueriedEntity img);
 }

@@ -33,15 +33,16 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import net.sandrohc.jikan.model.manga.Manga;
+import net.sandrohc.jikan.model.anime.Anime;
 
 public class AniContentPane extends Pane{
 
-	private Manga manga = null;
+	private Anime manga = null;
 	
 	private static Font font = new Font(16);
 	
-	public void setMangaData(Manga manga) {
+	public void setMangaData(Anime manga) {
+		System.out.println("LOADED: " + manga.episodes);
 		this.manga = manga;
 	}
 	

@@ -12,7 +12,8 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.annotations.Expose;
 import com.hosu.application.HosuClient;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
+import com.syntex.manga.queries.RequestAnimeData;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
 
@@ -26,7 +27,11 @@ public abstract class Source{
 	}
 	
 	public abstract Callable<RequestQueryResults> requestQueryResults();
-	public abstract Callable<RequestMangaData> requestMangaData(QueriedManga manga);
+	public abstract Callable<RequestMangaData> requestMangaData(QueriedEntity manga);
+	public abstract Callable<RequestAnimeData> requestAnimeData(QueriedEntity manga);
+	
+	public abstract SourceType sourceType();
+	
 	public abstract boolean nsfw();
 	
 	

@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 
 public class HosuBar extends Pane{
 
@@ -27,7 +26,7 @@ public class HosuBar extends Pane{
 		pane.setId("bar");
 		pane.setAlignment(Pos.CENTER_RIGHT);
 
-		PaneHandler panehandler = HosuClient.getInstance().getPaneHandler();
+		//PaneHandler panehandler = HosuClient.getInstance().getPaneHandler();
 		
 		HosuButton close = new HosuButton(com.hosu.css.Image.RED_CIRCLE, com.hosu.css.Image.RED_CIRCLE, iconSize, (e) -> {
 			HosuClient.getInstance().getStage().setIconified(true);
@@ -38,7 +37,8 @@ public class HosuBar extends Pane{
 		HosuButton minimize = new HosuButton(com.hosu.css.Image.BLUE_CIRCLE, com.hosu.css.Image.BLUE_CIRCLE, iconSize, (e) -> {
 			HosuClient.getInstance().getStage().setIconified(true);
 		});
-		
+	
+		/*
 		HosuButton mangaDropDown = new HosuButton(com.hosu.css.Image.SEARCH, com.hosu.css.Image.SEARCH, iconSize, (e) -> {
 			panehandler.setActiveWithSearch(panehandler.getMangaContent());
 			this.lastSet = panehandler.getMangaContent();
@@ -48,13 +48,13 @@ public class HosuBar extends Pane{
 			panehandler.setActive(panehandler.getHome());
 			this.lastSet = panehandler.getHome();
 		});
-		
+		*/
 			
 		HBox leftPane = new HBox();
-		Color highlight = Color.rgb(133, 133, 133, 0.3);
+		//Color highlight = Color.rgb(133, 133, 133, 0.3);
 		
-		leftPane.getChildren().add(mangaDropDown.setHighlightedColour(highlight).get());
-		leftPane.getChildren().add(home.setHighlightedColour(highlight).get());
+		//leftPane.getChildren().add(mangaDropDown.get());
+		//leftPane.getChildren().add(home.get());
 		
 	    pane.getChildren().add(minimize.get());
 	    pane.getChildren().add(close.get());

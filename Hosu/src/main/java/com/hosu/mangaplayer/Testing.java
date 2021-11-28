@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.syntex.manga.models.Chapter;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
 import com.syntex.manga.queries.RequestMangaData;
 
 public class Testing {
@@ -33,7 +33,7 @@ public class Testing {
 			Chapter chapter2 = new Chapter(null, "example1", "example1", () -> pages);
 			chapters.add(chapter2);
 			
-			QueriedManga queried = new QueriedManga("https://live.staticflickr.com/65535/50904838917_5a4401b5e3_o.jpg", "asd", null, "");
+			QueriedEntity queried = new QueriedEntity("https://live.staticflickr.com/65535/50904838917_5a4401b5e3_o.jpg", "asd", null, "");
 			
 			RequestMangaData manga = new RequestMangaData(queried, null, chapters);
 			

@@ -15,7 +15,9 @@ public class EmbedViewer {
 		WebView view = new WebView();
 
 		WebEngine webEngine = view.getEngine();
-		
+		webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36");
+		webEngine.setJavaScriptEnabled(true);
+
 		webEngine.load(url);
 
 		ScrollPane scroallable = new ScrollPane(view);

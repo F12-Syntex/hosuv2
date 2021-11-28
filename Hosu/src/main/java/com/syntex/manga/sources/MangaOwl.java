@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import com.syntex.manga.models.Chapter;
-import com.syntex.manga.models.QueriedManga;
+import com.syntex.manga.models.QueriedEntity;
+import com.syntex.manga.queries.RequestAnimeData;
 import com.syntex.manga.queries.RequestMangaData;
 import com.syntex.manga.queries.RequestQueryResults;
 import com.syntex.manga.utils.Encoder;
@@ -28,14 +29,14 @@ public class MangaOwl extends Source{
 			
 			String[] section = data.split("data-title=");
 			
-			List<QueriedManga> mangas = new ArrayList<>();
+			List<QueriedEntity> mangas = new ArrayList<>();
 			
 			for(String o : section) {
 				if(!o.contains("data-background-image=")) continue;
 				String img = o.split("data-background-image=\"")[1].split("\"")[0].trim();
 				String alt = o.split(">")[0].trim().replace("\"", "");
 				String url = "https://mangaowl.com" + o.split("<h6 class=\"comic_title\">")[1].split("<a href=\"")[1].split("\"")[0].trim();
-				QueriedManga queriedManga = new QueriedManga(img, alt, this, url);
+				QueriedEntity queriedManga = new QueriedEntity(img, alt, this, url);
 				mangas.add(queriedManga);
 			}
 			
@@ -47,7 +48,7 @@ public class MangaOwl extends Source{
 	}
 
 	@Override
-	public Callable<RequestMangaData> requestMangaData(QueriedManga manga) {
+	public Callable<RequestMangaData> requestMangaData(QueriedEntity manga) {
 		
 		return() -> {
 			String data = this.readURL(manga.getUrl());
@@ -101,6 +102,12 @@ public class MangaOwl extends Source{
 		
 		
 	}
+	
+	@Override
+	public Callable<RequestAnimeData> requestAnimeData(QueriedEntity manga) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public boolean nsfw() {
@@ -108,4 +115,9 @@ public class MangaOwl extends Source{
 		return false;
 	}
 	
+	@Override
+	public SourceType sourceType() {
+		// TODO Auto-generated method stub
+		return SourceType.MANGA;
+	}
 }
