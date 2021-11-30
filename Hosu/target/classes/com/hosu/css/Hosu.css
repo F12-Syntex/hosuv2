@@ -18,6 +18,67 @@
      -fx-background-color: #1990F1;
      -fx-effect: dropshadow(gaussian, rgba(0,0,0,1), 30,0,0,0 );
 }
+ #red {
+     -fx-background-color: red;
+}
+ #blue {
+     -fx-background-color: blue;
+}
+
+#stats {
+     -fx-border-radius: 15 15 15 15;
+     -fx-background-radius: 15 15 15 15;
+     -fx-background-color: rgba(41, 45, 63, 0.6);
+     -fx-effect: innershadow(gaussian, rgba(0,0,0,0.4), 40,0,0,0);
+     -fx-text-fill: white;
+     fx-selection-bar: #0d101c;
+     -fx-selection-bar-non-focused: #0d101c;
+     -fx-color: #0d101c;
+     -fx-focused-mark-color: #0d101c;
+     -fx-focused-text-base-color: #0d101c;
+     -fx-focus-color: #0d101c;
+     -fx-mark-color: #0d101c;
+     -fx-base: #0d101c;
+     -fx-control-inner-background: #0d101c;
+     -fx-background-insets: 0, 0;
+     -fx-padding: 0;
+}
+
+#stats-hover {
+     -fx-border-radius: 15 15 15 15;
+     -fx-background-radius: 15 15 15 15;
+     -fx-background-color: rgba(56, 65, 107, 0.5);
+     -fx-effect: innershadow(gaussian, rgba(0,0,0,0.4), 40,0,0,0);
+ 	 -fx-text-fill: white;
+     -fx-selection-bar: #26262E;
+     -fx-selection-bar-non-focused: #26262E;
+     -fx-color: #26262E;
+     -fx-focused-mark-color: #26262E;
+     -fx-focused-text-base-color: #26262E;
+     -fx-focus-color: #26262E;
+     -fx-mark-color: #26262E;
+     -fx-base: #26262E;
+     -fx-control-inner-background: #26262E;
+     -fx-background-insets: 0, 0;
+     -fx-padding: 0;
+}
+
+#graph{
+ -fx-border-radius: 15 15 15 15;
+ -fx-background-radius: 15 15 15 15;
+ -fx-text-fill: white;
+ fx-selection-bar: #0d101c;
+ -fx-selection-bar-non-focused: #0d101c;
+ -fx-focused-mark-color: #0d101c;
+ -fx-focused-text-base-color: #0d101c;
+ -fx-focus-color: #0d101c;
+ -fx-mark-color: #0d101c;
+ -fx-base: #0d101c;
+ -fx-control-inner-background: #0d101c;
+ -fx-background-insets: 0, 0;
+ -fx-padding: 0;
+}
+
 /* */
  #content {
      -fx-background-color: #0d101c;

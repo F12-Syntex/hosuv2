@@ -12,6 +12,7 @@ import com.hosu.helpers.Windows;
 import com.hosu.panes.HosuButton;
 import com.hosu.panes.Loader;
 import com.hosu.panes.PaneHandler;
+import com.hosu.panes.SettingsPane;
 import com.hosu.settings.Settings;
 import com.hosu.windows.EmbedViewer;
 
@@ -102,23 +103,30 @@ public class HosuClient extends Application {
 			EmbedViewer.show("https://saucenao.com/");
 			//EmbedViewer.show("https://embed.animeflix.ws/video.php?id=MTc1MTQ5&title=Scarlet+Nexus&typesub=SUB&sub=&cover=Y292ZXIvc2NhcmxldC1uZXh1cy5wbmc=-#-default");
 		}).get();
+		
+		StackPane settings = (StackPane) new HosuButton(com.hosu.css.Image.BACKEND_SETTINGS, com.hosu.css.Image.BACKEND_SETTINGS, 28, (e) -> {
+			EmbedViewer.show("https://saucenao.com/");
+			//EmbedViewer.show("https://embed.animeflix.ws/video.php?id=MTc1MTQ5&title=Scarlet+Nexus&typesub=SUB&sub=&cover=Y292ZXIvc2NhcmxldC1uZXh1cy5wbmc=-#-default");
+		}).get();
+		
+		StackPane home = (StackPane) new HosuButton(com.hosu.css.Image.STATS, com.hosu.css.Image.STATS, 28, (e) -> {
+			this.paneHandler.getHosuBar().lastSet = this.paneHandler.getStatsPage();
+			this.paneHandler.setActive(this.paneHandler.getStatsPage());
+		}).get();
         
 		//side offYOffset
 		StackPane empty = new StackPane();
 		//empty.setMinHeight(Settings.SIZE.getHeight() / 10);
 		//empty.setMaxHeight(Settings.SIZE.getHeight() / 10);
 		
+		side.getChildren().add(home);
 		side.getChildren().add(empty);
 		side.getChildren().add(minimize.get());
 		side.getChildren().add(downloads.get());
 		side.getChildren().add(icons);
-		
-		
-		
-		
-		
 		side.getChildren().add(source);
-        		
+		side.getChildren().add(settings);
+ 		
 		side.setAlignment(Pos.TOP_CENTER);
 
         PopOver popOver = new PopOver();
@@ -130,8 +138,6 @@ public class HosuClient extends Application {
         popOver.setAnimated(true);
         popOver.setId("popover");
 
-        
-        
 		icons.setOnMousePressed((e) -> {
 			if(!popOver.isShowing()) {
 				Pane test = new Loader(popOver).get();
@@ -139,6 +145,28 @@ public class HosuClient extends Application {
 				popOver.show(icons);	
 			}else {
 				popOver.hide();
+			}
+		});
+		
+		icons.setId("popover");
+		icons.getStylesheets().add(this.cssManager.getCss(Styling.HOSU));
+        
+        PopOver settingsPopOver = new PopOver();
+        settingsPopOver.setDetachable(false);
+        settingsPopOver.setAutoHide(false);
+        settingsPopOver.setHideOnEscape(false);
+        settingsPopOver.setAutoHide(true);
+        
+        settingsPopOver.setAnimated(true);
+        settingsPopOver.setId("popover");
+        
+		settings.setOnMousePressed((e) -> {
+			if(!settingsPopOver.isShowing()) {
+				Pane test = new SettingsPane().get();
+				settingsPopOver.setContentNode(test);
+				settingsPopOver.show(settings);	
+			}else {
+				settingsPopOver.hide();
 			}
 		});
 		
@@ -155,7 +183,8 @@ public class HosuClient extends Application {
             body.setId("content");
             body.setPrefHeight(size.getHeight() - size.getHeight()/15);
             body.setPrefWidth(size.getWidth());
-
+            body.setAlignment(Pos.CENTER);
+            
         	this.paneHandler.register();
             
             javafx.scene.layout.Pane top = this.paneHandler.getHosuBar().get();
@@ -191,7 +220,8 @@ public class HosuClient extends Application {
             
 			this.paneHandler.getHosuBar().lastSet = this.paneHandler.getMangaContent();
 			this.paneHandler.getHome().get();
-			this.paneHandler.setActiveWithSearch(this.paneHandler.getMangaContent());
+			//this.paneHandler.setActiveWithSearch(this.paneHandler.getMangaContent());
+			this.paneHandler.setActive(this.paneHandler.getStatsPage());
 			this.paneHandler.getMangaContent().get();
 
         	//ResizeHelper.addResizeListener(primaryStage, size.getWidth()/2, size.getHeight(), Integer.MAX_VALUE, Integer.MAX_VALUE);            

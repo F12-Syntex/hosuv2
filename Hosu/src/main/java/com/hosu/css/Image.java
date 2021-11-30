@@ -14,7 +14,8 @@ public enum Image {
 	PAUSE("icons8_pause_button_48px.png"), PLAY("icons8_circled_play_48px.png"), STOP("icons8_multiply_48px.png"), RESTART("icons8_restart_48px_1.png"),
 	TURBO_ON("icons8_quick_mode_on_48px.png"), TURBO_OFF("icons8_quick_mode_off_48px.png"), EXIT("icons8_delete_24px.png"), SEARCH_OFF("icons8_search_48px.png"),
 	SEARCH_ON("icons8_search_more_48px.png"), SEARCH2("icons8_search_bar_48px.png"), DOWNLOADS("icons8_downloads_48px.png"), ICONS("icons8_small_icons_48px.png"),
-	LOADER2("Cube-0.6s-111px.gif"), LOADER3("Blocks-1s-410px.gif"), SEARCH_BROWSER("icons8_new_window_48px.png"), SAUCE("soy-sauce.png");
+	LOADER2("Cube-0.6s-111px.gif"), LOADER3("Blocks-1s-410px.gif"), SEARCH_BROWSER("icons8_new_window_48px.png"), SAUCE("soy-sauce.png"), BACKEND_SETTINGS("icons8_backend_development_48px.png"),
+	STATS("icons8_graph_48px.png");
 	
 	
 	private final String resource;
